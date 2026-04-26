@@ -45,6 +45,12 @@ This file provides guidance for AI coding assistants working on this link shorte
 4. **Tailwind for Styling**: Use utility classes, avoid custom CSS
 5. **Clerk for Auth**: Never roll your own authentication
 
+## ⚠️ IMPORTANT: Middleware Deprecation
+
+**NEVER use `middleware.ts`** - This pattern is deprecated in Next.js 16 and is NOT used in this project. 
+
+**Instead, use `proxy.ts`** for request interception and routing logic. The project uses Next.js 16 which has moved away from the traditional middleware pattern. Always refer to `proxy.ts` in the project root for handling request-level logic.
+
 ## Detailed Guidelines
 
 ### 📚 Documentation Files (READ BEFORE CODING)
@@ -87,7 +93,7 @@ The `/docs` directory contains comprehensive coding standards and patterns speci
 
 ### Adding Authentication
 1. **Read `/docs/authentication.md` FIRST - This is NON-NEGOTIABLE**
-2. Protect routes in middleware or with `auth()` check
+2. Protect routes using `proxy.ts` or with `auth()` check in Server Components
 3. Use `auth()` in Server Components
 4. Use `useAuth()` hook in Client Components
 5. Never expose sensitive data to unauthenticated users
