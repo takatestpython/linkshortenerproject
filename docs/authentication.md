@@ -10,6 +10,7 @@ All authentication in this application is handled exclusively by **Clerk v7.2.1*
 2. **Modal Sign-In**: Sign-in and sign-up flows must always launch as modals
 3. **Protected Dashboard**: The `/dashboard` route requires authentication
 4. **Auto-Redirect**: Logged-in users accessing the homepage are redirected to `/dashboard`
+5. **shadcn Theme**: Clerk components use the shadcn theme for visual consistency
 
 ## Implementation Patterns
 
@@ -194,3 +195,59 @@ Before deploying authentication-related code:
 - [Clerk Next.js Documentation](https://clerk.com/docs/quickstarts/nextjs)
 - [Clerk Middleware Guide](https://clerk.com/docs/references/nextjs/clerk-middleware)
 - [Clerk Components](https://clerk.com/docs/components/overview)
+- [Clerk Theming](https://clerk.com/docs/customization/themes)
+
+## Theming
+
+All Clerk UI components are styled using the **shadcn theme** from `@clerk/ui/themes` to ensure visual consistency with the application's shadcn/ui design system.
+
+### Configuration
+
+The theme is configured in the root layout (`app/layout.tsx`):
+
+```typescript
+import { ClerkProvider } from "@clerk/nextjs";
+import { shadcn } from "@clerk/ui/themes";
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body>
+        <ClerkProvider appearance={{ baseTheme: shadcn }}>
+          {children}
+        </ClerkProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+### How It Works
+
+The shadcn theme uses CSS variables that align with shadcn/ui:
+- `--primary`, `--primary-foreground` - Primary actions (buttons, links)
+- `--card`, `--card-foreground` - Component backgrounds
+- `--destructive` - Error/danger states
+- `--input` - Form inputs
+- `--muted`, `--muted-foreground` - Secondary elements
+- `--ring` - Focus indicators
+
+This ensures all Clerk components (modals, user button, profile pages) automatically match the application's design system.
+
+### Custom Styling
+
+If you need to customize Clerk components beyond the base theme, use the `appearance` prop:
+
+```typescript
+<ClerkProvider
+  appearance={{
+    baseTheme: shadcn,
+    elements: {
+      // Override specific elements
+      formButtonPrimary: "bg-primary hover:bg-primary/90",
+    },
+  }}
+>
+```
+
+⚠️ **Important**: Always extend the shadcn base theme rather than replacing it entirely.
